@@ -320,8 +320,23 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
     const video = videoRefs[index].current;
     if (!video) return;
     SoundEffects.playTick();
+    
+    // Check standard and iOS-specific Safari video fullscreen methods
     if (video.requestFullscreen) {
       video.requestFullscreen();
+    } else if ((video as any).webkitEnterFullscreen) {
+      // iOS Safari/iPhone supports webkitEnterFullscreen directly on HTMLVideoElement
+      try {
+        (video as any).webkitEnterFullscreen();
+      } catch (err) {
+        console.log("webkitEnterFullscreen failed", err);
+      }
+    } else if ((video as any).webkitEnterFullScreen) {
+      try {
+        (video as any).webkitEnterFullScreen();
+      } catch (err) {
+        console.log("webkitEnterFullScreen failed", err);
+      }
     } else {
       const v = video as unknown as Record<string, unknown>;
       if (typeof v.webkitRequestFullscreen === "function") {
@@ -760,7 +775,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
         <section 
           id="moments" 
           ref={sectionRefs.moments}
-          className="scroll-section w-full flex flex-col items-center justify-center p-6 pb-24 md:pb-6"
+          className="scroll-section w-full flex flex-col items-center justify-center p-6 pb-48 md:pb-24"
         >
           <div className="max-w-4xl w-full z-10 text-center flex flex-col items-center gap-12">
             
