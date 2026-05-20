@@ -16,6 +16,12 @@ import {
 } from "lucide-react";
 import { SoundEffects } from "@/utils/SoundEffects";
 
+interface iOSHTMLVideoElement extends HTMLVideoElement {
+  webkitEnterFullscreen?: () => void;
+  webkitEnterFullScreen?: () => void;
+  webkitRequestFullscreen?: () => void;
+}
+
 interface ScrapbookDashboardProps {
   startDate: Date;
   onRestart: () => void;
@@ -317,30 +323,31 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
   };
 
   const triggerVideoFullscreen = (index: number) => {
-    const video = videoRefs[index].current;
+    const video = videoRefs[index].current as iOSHTMLVideoElement | null;
     if (!video) return;
     SoundEffects.playTick();
     
     // Check standard and iOS-specific Safari video fullscreen methods
     if (video.requestFullscreen) {
       video.requestFullscreen();
-    } else if ((video as any).webkitEnterFullscreen) {
+    } else if (video.webkitEnterFullscreen) {
       // iOS Safari/iPhone supports webkitEnterFullscreen directly on HTMLVideoElement
       try {
-        (video as any).webkitEnterFullscreen();
+        video.webkitEnterFullscreen();
       } catch (err) {
         console.log("webkitEnterFullscreen failed", err);
       }
-    } else if ((video as any).webkitEnterFullScreen) {
+    } else if (video.webkitEnterFullScreen) {
       try {
-        (video as any).webkitEnterFullScreen();
+        video.webkitEnterFullScreen();
       } catch (err) {
         console.log("webkitEnterFullScreen failed", err);
       }
-    } else {
-      const v = video as unknown as Record<string, unknown>;
-      if (typeof v.webkitRequestFullscreen === "function") {
-        (v.webkitRequestFullscreen as () => void)();
+    } else if (video.webkitRequestFullscreen) {
+      try {
+        video.webkitRequestFullscreen();
+      } catch (err) {
+        console.log("webkitRequestFullscreen failed", err);
       }
     }
   };
