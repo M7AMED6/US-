@@ -22,8 +22,6 @@ const config: Config = {
       fontFamily: {
         playfair: ["var(--font-playfair)", "serif"],
         inter: ["var(--font-inter)", "sans-serif"],
-        dancing: ["var(--font-dancing)", "cursive"],
-        greatvibes: ["var(--font-great-vibes)", "cursive"],
       },
       animation: {
         'float-slow': 'floatSlow 6s ease-in-out infinite',
