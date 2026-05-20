@@ -782,7 +782,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
         <section 
           id="moments" 
           ref={sectionRefs.moments}
-          className="scroll-section w-full flex flex-col items-center justify-center p-6 pb-48 md:pb-24"
+          className="scroll-section w-full flex flex-col items-center justify-center p-6 pb-60 md:pb-28"
         >
           <div className="max-w-4xl w-full z-10 text-center flex flex-col items-center gap-12">
             

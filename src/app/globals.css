@@ -8,7 +8,7 @@
 }
 
 * {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -59,15 +59,39 @@ body {
 
 /* Scroll snap container */
 .scroll-container {
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity; /* Smoother snapping on desktop */
   overflow-y: auto;
   height: 100vh;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Native-feeling momentum scroll on iOS */
 }
 
 .scroll-section {
   scroll-snap-align: start;
   min-height: 100vh;
+  min-height: 100dvh; /* Use dynamic viewport height to handle mobile toolbars */
   position: relative;
+}
+
+/* Optimize scroll behavior and layout for mobile/touch screens */
+@media (max-width: 768px) {
+  .scroll-container {
+    scroll-snap-type: none; /* Disable scroll snapping on mobile for smooth, lag-free scrolling */
+    height: 100dvh;
+  }
+  
+  .scroll-section {
+    scroll-snap-align: none;
+    min-height: 100dvh;
+    height: auto;
+    /* Ensure content doesn't get hidden behind the floating bottom navbar */
+    padding-bottom: 7rem !important;
+  }
+  
+  /* Give extra breathing room at the bottom of the last section containing the video */
+  #moments.scroll-section {
+    padding-bottom: 16rem !important;
+  }
 }
 
 /* Hide scrollbar for layout if needed */

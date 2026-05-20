@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Dancing_Script, Great_Vibes, Cairo } from "next/font/google";
+import { Playfair_Display, Inter, Cairo } from "next/font/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -16,17 +16,6 @@ const cairo = Cairo({
   subsets: ["arabic"],
   variable: "--font-cairo",
   weight: ["300", "400", "500", "700", "900"],
-});
-
-const dancing = Dancing_Script({
-  subsets: ["latin"],
-  variable: "--font-dancing",
-});
-
-const greatVibes = Great_Vibes({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-great-vibes",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className="scroll-smooth">
       <body
-        className={`${playfair.variable} ${inter.variable} ${dancing.variable} ${greatVibes.variable} ${cairo.variable} font-inter antialiased bg-pastelBg text-foreground`}
+        className={`${playfair.variable} ${inter.variable} ${cairo.variable} font-inter antialiased bg-pastelBg text-foreground`}
       >
         {children}
       </body>
