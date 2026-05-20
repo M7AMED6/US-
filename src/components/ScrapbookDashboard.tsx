@@ -36,6 +36,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
   const [audioDuration, setAudioDuration] = useState(0);
   const [showPlayOverlay, setShowPlayOverlay] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const loopCountRef = useRef(0);
   
   // --- Live Timer State ---
   const [timeDiff, setTimeDiff] = useState({
@@ -51,7 +52,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
   const [heartBursts, setHeartBursts] = useState<HeartBurst[]>([]);
 
   // --- Message Section States & Config ---
-  const MY_MESSAGE = " شايفة الصرف ياروحي المهم اني اول مرة هكتب بجد كده سيبك من الهزار بتاعي ربنا يخليكي ليا وتفضلي منورة حياتي دايما وانا عارف اني بزعلك كتير بس والله غصب عني";
+  const MY_MESSAGE = " والله العظيم دي اقل حاجة اقدر اعملهالك انا لو اطول اديكي عيني مش هبخل عليكي والله وبعدين الموضوع الي حصل ده واله كان غصب عني انا مليش غيرك في الدنيا ها ";
   const [displayedMessage, setDisplayedMessage] = useState("");
 
   // --- Custom Video Player States ---
@@ -71,15 +72,17 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
 
   // 1. Initialize Audio Context and source
   useEffect(() => {
-    // We use a beautiful copyright-free piano instrumental
-    const audioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3";
+    // We use the custom local song from public folder
+    const audioUrl = "/song77.mp3";
     const audio = new Audio(audioUrl);
-    audio.loop = true;
+    audio.loop = false; // Disable default looping to handle count manually
     audioRef.current = audio;
 
     const updateProgress = () => {
       if (audio.duration) {
         setAudioProgress((audio.currentTime / audio.duration) * 100);
+        // Fallback to update duration dynamically if event was missed
+        setAudioDuration(audio.duration);
       }
     };
 
@@ -87,13 +90,30 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
       setAudioDuration(audio.duration);
     };
 
+    // If metadata is already loaded when effect runs, set duration directly
+    if (audio.readyState >= 1) {
+      setAudioDuration(audio.duration);
+    }
+
     const handleAudioPlay = () => setIsPlaying(true);
     const handleAudioPause = () => setIsPlaying(false);
+
+    const handleEnded = () => {
+      if (loopCountRef.current < 2) {
+        loopCountRef.current += 1;
+        audio.currentTime = 0;
+        audio.play().catch((err) => console.log("Audio replay blocked", err));
+      } else {
+        setIsPlaying(false);
+        loopCountRef.current = 0; // Reset counter for subsequent manual clicks
+      }
+    };
 
     audio.addEventListener("timeupdate", updateProgress);
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
     audio.addEventListener("play", handleAudioPlay);
     audio.addEventListener("pause", handleAudioPause);
+    audio.addEventListener("ended", handleEnded);
 
     // Sync volume/mute
     audio.muted = SoundEffects.getMutedState();
@@ -104,6 +124,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
       audio.removeEventListener("play", handleAudioPlay);
       audio.removeEventListener("pause", handleAudioPause);
+      audio.removeEventListener("ended", handleEnded);
     };
   }, []);
 
@@ -190,6 +211,8 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
 
     if (audioRef.current.paused) {
       try {
+        loopCountRef.current = 0; // Reset loop count on manual play
+        audioRef.current.muted = false; // Ensure audio is unmuted on user play
         await audioRef.current.play();
       } catch (err) {
         console.log("Audio play blocked", err);
@@ -202,8 +225,6 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
       audioRef.current.pause();
     }
   };
-
-
 
   const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!audioRef.current || !audioDuration) return;
@@ -222,6 +243,8 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
     SoundEffects.playChime();
     if (audioRef.current) {
       try {
+        loopCountRef.current = 0; // Reset loop count on tap-to-play
+        audioRef.current.muted = false; // Ensure audio is unmuted on tap-to-play
         await audioRef.current.play();
       } catch (err) {
         console.log("Audio play blocked", err);
@@ -455,7 +478,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                 أهلاً يا {userName} 💕
               </motion.h2>
               
-              <span className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-softRose to-deepRose mb-2">قصة حبنا</span>
+              <span className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-softRose to-deepRose mb-2">الريلاشن...</span>
               <h1 className="text-4xl md:text-6xl font-black text-gray-800 tracking-tight leading-tight">
                  بتبدأ من هنا
               </h1>
@@ -606,7 +629,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               </div>
 
               {/* Song details */}
-              <h3 className="text-xl font-bold text-gray-800 tracking-wide">Midnight Waltz</h3>
+              <h3 className="text-xl font-bold text-gray-800 tracking-wide">أغنيتنا الخاصة 💕</h3>
               <p className="text-gray-400 text-xs mt-1 font-semibold uppercase tracking-wider mb-6"> </p>
 
               {/* Progress Slider */}
@@ -694,11 +717,11 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             {/* Grid of 6 interactive cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-4">
               {[
-                { title: "الأكلة المفضلة", desc: "كريب فراولة بكريمة مسكرة", icon: "🍓" },
-                { title: "اللون المفضل", desc: "الروز الهادي والدهبي اللامع", icon: "🎨" },
-                { title: "الفيلم المفضل", desc: "About Time (بنسمعه كتير)", icon: "🎬" },
-                { title: "المكان المفضل", desc: "كافيه دافي ع البحر", icon: "📍" },
-                { title: "الهواية المفضلة", desc: "تصوير اللحظات بالكاميرا", icon: "🌸" },
+                { title: "الأكلة المفضلة", desc: "   شاورما وكريب اكيدد", icon: "🍓" },
+                { title: "اللون المفضل", desc: " الاسود والاحمر والاخضر  ", icon: "🎨" },
+                { title: "الفيلم المفضل", desc: "365 DAY", icon: "🎬" },
+                { title: "المكان المفضل", desc: "اسكندرية في الشتا وممكن دهب في الصيف", icon: "📍" },
+                { title: "الهواية المفضلة", desc: "  تربية القطط طبعاا", icon: "🌸" },
                 { title: "أحلى ذكرى", desc: "أول خروجة لينا تحت المطر", icon: "💌" }
               ].map((card, i) => (
                 <motion.div
@@ -756,7 +779,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                 whileInView={{ opacity: 1 }}
                 className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
               >
-                كلام من قلبي
+                 كلام جد ها وياريت نفهمم 
               </motion.h2>
 
               <motion.div
@@ -800,7 +823,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                 whileInView={{ opacity: 1 }}
                 className="text-3xl text-softRose mb-2"
               >
-                ذكرياتنا سوا 🎥
+                 بحب الفديو ده 🎥
               </motion.p>
               
               <motion.h2 
@@ -808,19 +831,15 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                 whileInView={{ opacity: 1 }}
                 className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
               >
-                متسجلة في ثواني
+                 احنا ولا ايه 
               </motion.h2>
 
               {/* Custom Videos Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-4">
+              <div className="grid grid-cols-1 max-w-xl mx-auto gap-6 md:gap-8 mt-4 w-full">
                 {[
                   { 
-                    title: "بنتمشى سوا", 
-                    src: "https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c05cba3d97eb14cbb2bad0559e728ec0&profile_id=139&oauth2_token_id=57447761"
-                  },
-                  { 
-                    title: "ماسكين إيد بعض", 
-                    src: "https://player.vimeo.com/external/435674703.sd.mp4?s=7fdf7084534a6efc68436cd9df1c86a6d36efda0&profile_id=139&oauth2_token_id=57447761"
+                    title: "يارب بقى يارب", 
+                    src: "/vidtik.mp4"
                   }
                 ].map((videoData, idx) => (
                   <motion.div

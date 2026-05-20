@@ -103,7 +103,7 @@ export default function Home() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-wide"
             >
-              كشكول ذكرياتنا
+               US ?
             </motion.h1>
             
             <motion.p
