@@ -387,7 +387,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
   });
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-pastelBg via-[#FFF4F6] to-[#FFF0F3]">
+    <div className="relative min-h-screen w-full bg-gradient-to-b from-[#FF69B4] via-[#FF85C2] to-[#FF52A2]">
       
       {/* 1. iOS / Safari Autoplay Permission Overlay */}
       <AnimatePresence>
@@ -474,7 +474,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="bg-gradient-to-r from-[#F472B6]/15 to-[#E11D48]/15 border border-[#E11D48]/35 px-6 py-2.5 rounded-full text-sm md:text-base font-bold text-deepRose tracking-wide mb-6 inline-block shadow-sm select-none"
+              className="bg-white/80 border border-white/60 px-6 py-2.5 rounded-full text-sm md:text-base font-bold text-deepRose tracking-wide mb-6 inline-block shadow-sm select-none"
             >
               ذكرياتنا هتعيش دايماً هنا 💕
             </motion.div>
@@ -510,8 +510,8 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               </p>
             </motion.div>
             
-            <p className="text-gray-500 font-medium text-sm md:text-base max-w-md leading-relaxed mb-8">
-                 مش ده اكيد الي هيبين انا قد ايه بحبك بس اهي حاجة يارب تعجبك <span className="text-deepRose font-bold underline">{formattedDate}</span>.
+            <p className="text-white font-medium text-sm md:text-base max-w-md leading-relaxed mb-8">
+                 مش ده اكيد الي هيبين انا قد ايه بحبك بس اهي حاجة يارب تعجبك <span className="text-pink-100 font-extrabold underline decoration-white decoration-2">{formattedDate}</span>.
             </p>
             
             <div className="flex gap-4">
@@ -524,7 +524,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               </button>
               <button
                 onClick={onRestart}
-                className="px-4 py-3 text-xs text-gray-400 hover:text-softRose font-semibold transition cursor-pointer underline underline-offset-4"
+                className="px-4 py-3 text-xs text-white/80 hover:text-white font-semibold transition cursor-pointer underline underline-offset-4"
               >
                 تغيير التاريخ
               </button>
@@ -542,7 +542,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-3xl text-softRose mb-2 animate-pulse"
+              className="text-3xl text-pink-100 font-semibold mb-2 animate-pulse"
             >
               بقالنا مع بعض...
             </motion.p>
@@ -550,7 +550,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             <motion.h2 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
+              className="text-3xl md:text-5xl font-extrabold text-white mb-8"
             >
               ساعات وثواني مفارقتيش بالي 
             </motion.h2>
@@ -582,7 +582,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                   {/* Flip Number implementation */}
                   <FlipNumber value={String(card.value).padStart(2, "0")} />
                   
-                  <span className="text-gray-400 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">
+                  <span className="text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">
                     {card.label}
                   </span>
                 </motion.div>
@@ -601,7 +601,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-3xl text-softRose mb-2"
+              className="text-3xl text-pink-100 font-semibold mb-2"
             >
               أغنية كل اما اسمعها افتكرك  🎵
             </motion.p>
@@ -656,7 +656,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
 
               {/* Progress Slider */}
               <div className="w-full flex items-center justify-between gap-3 mb-6">
-                <span className="text-[10px] font-bold text-gray-400 min-w-[28px] text-right">
+                <span className="text-[10px] font-bold text-gray-500 min-w-[28px] text-right">
                   {formatTime(audioRef.current?.currentTime || 0)}
                 </span>
                 
@@ -671,7 +671,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                   />
                 </div>
 
-                <span className="text-[10px] font-bold text-gray-400 min-w-[28px] text-left">
+                <span className="text-[10px] font-bold text-gray-500 min-w-[28px] text-left">
                   {formatTime(audioDuration)}
                 </span>
               </div>
@@ -723,7 +723,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             <motion.p 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-3xl text-softRose mb-2"
+              className="text-3xl text-pink-100 font-semibold mb-2"
             >
               حاجات انا عارفها ❤️
             </motion.p>
@@ -731,7 +731,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
             <motion.h2 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
+              className="text-3xl md:text-5xl font-extrabold text-white mb-8"
             >
              ياريت يكونوا صح
             </motion.h2>
@@ -791,7 +791,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               <motion.p 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                className="text-3xl text-softRose mb-2"
+                className="text-3xl text-pink-100 font-semibold mb-2"
               >
                 رسالتي ليكي 💌
               </motion.p>
@@ -799,7 +799,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               <motion.h2 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
+                className="text-3xl md:text-5xl font-extrabold text-white mb-8"
               >
                  كلام جد ها وياريت نفهمم 
               </motion.h2>
@@ -843,7 +843,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               <motion.p 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                className="text-3xl text-softRose mb-2"
+                className="text-3xl text-pink-100 font-semibold mb-2"
               >
                  بحب الفديو ده 🎥
               </motion.p>
@@ -851,7 +851,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               <motion.h2 
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                className="text-3xl md:text-5xl font-extrabold text-gray-800 mb-8"
+                className="text-3xl md:text-5xl font-extrabold text-white mb-8"
               >
                  احنا ولا ايه 
               </motion.h2>
@@ -964,7 +964,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
               <button
                 key={tab.id}
                 onClick={() => scrollToSection(tab.id)}
-                className="relative flex flex-col items-center justify-center gap-1 flex-1 min-h-[48px] py-1 text-gray-400 hover:text-softRose transition duration-300 select-none cursor-pointer"
+                className="relative flex flex-col items-center justify-center gap-1 flex-1 min-h-[48px] py-1 text-pink-950/50 hover:text-deepRose transition duration-300 select-none cursor-pointer"
                 aria-label={tab.label}
               >
                 {/* Highlight Circle for active state */}
@@ -980,7 +980,7 @@ export default function ScrapbookDashboard({ startDate, onRestart, userName }: S
                   <Icon size={18} />
                 </span>
 
-                <span className={`text-[9px] font-bold relative z-10 transition duration-300 ${isActive ? "text-deepRose opacity-100" : "text-gray-400 opacity-60"}`}>
+                <span className={`text-[9px] font-bold relative z-10 transition duration-300 ${isActive ? "text-deepRose opacity-100" : "text-pink-950/60"}`}>
                   {tab.label}
                 </span>
 
